@@ -2,7 +2,7 @@ package com.main.geohogar.geohogarapp.utils
 
 
 object Constants {
-    private const val HOST = "192.168.1.122"
+    private const val HOST = "172.27.110.220"
     private const val PORT = "4000"
 
     const val BASE_URL = "http://$HOST:$PORT/api/"

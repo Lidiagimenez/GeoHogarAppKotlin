@@ -220,10 +220,12 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
+            android:enabled="false"
+            android:alpha="0.5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvOperationLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvActiveFilters"
             app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

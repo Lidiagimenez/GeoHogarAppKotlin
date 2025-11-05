@@ -52,27 +52,30 @@ class PropertyRepository {
             val idEstadoPropiedad = getEstadoPropiedadId(filter.isRent, filter.isSale)
 
             Log.d("PropertyRepository", """
-                🔍 Enviando filtros:
-                - ID_zona: $idZona (${filter.selectedNeighborhood})
-                - ID_tipoinmueble: $idTipoInmueble (${filter.selectedPropertyType})
-                - ID_estadopropiedad: $idEstadoPropiedad
-                - Precio: ${filter.priceMin} - ${filter.priceMax}
-            """.trimIndent())
+            🔍 Enviando filtros:
+            - ID_zona: $idZona (${filter.selectedNeighborhood ?: "Todos"})
+            - ID_tipoinmueble: $idTipoInmueble (${filter.selectedPropertyType ?: "Todos"})
+            - ID_estadopropiedad: $idEstadoPropiedad
+            - Precio: ${filter.priceMin} - ${filter.priceMax}
+            - Garage: ${filter.garage}
+            - Balcón: ${filter.balcon}
+            - Patio: ${filter.patio}
+            - Acepta Mascota: ${filter.aceptaMascota}
+        """.trimIndent())
 
             val response = api.getPropertiesWithFilters(
                 precioDesde = filter.priceMin.toDouble(),
                 precioHasta = filter.priceMax.toDouble(),
-                idZona = getZonaIdFromName(filter.selectedNeighborhood),
-                idTipoInmueble = getTipoInmuebleIdFromName(filter.selectedPropertyType),
+                idZona = idZona,
+                idTipoInmueble = idTipoInmueble,
                 idAmbiente = filter.ambienteId,
-                idEstadoPropiedad = getEstadoPropiedadId(filter.isRent, filter.isSale),
-                garage = filter.garage,
-                balcon = filter.balcon,
-                patio = filter.patio,
-                aceptaMascota = filter.aceptaMascota
+                idEstadoPropiedad = idEstadoPropiedad,
+                // ✅ CAMBIO CRÍTICO: Solo enviar si son true, de lo contrario null
+                garage = if (filter.garage == true) true else null,
+                balcon = if (filter.balcon == true) true else null,
+                patio = if (filter.patio == true) true else null,
+                aceptaMascota = if (filter.aceptaMascota == true) true else null
             )
-
-
 
             if (response.isSuccessful) {
                 val apiResponse = response.body()

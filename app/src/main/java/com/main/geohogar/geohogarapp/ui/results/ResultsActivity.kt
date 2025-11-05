@@ -36,7 +36,7 @@ class ResultsActivity : AppCompatActivity() {
 
     private fun setupUI() {
         binding.btnBack.setOnClickListener {
-           // finish()
+            finish()
         }
     }
 
@@ -49,7 +49,7 @@ class ResultsActivity : AppCompatActivity() {
                 showMapDialog(property)
             }
         ).apply {
-            submitList(emptyList()) // ✅ Evita el warning inicial
+            submitList(emptyList())
         }
 
         binding.rvProperties.apply {
@@ -91,12 +91,25 @@ class ResultsActivity : AppCompatActivity() {
     private fun getFilterFromIntent(): Filter? {
         val neighborhood = intent.getStringExtra(Constants.EXTRA_NEIGHBORHOOD)
         val propertyType = intent.getStringExtra(Constants.EXTRA_PROPERTY_TYPE)
-        val priceMin = intent.getIntExtra(Constants.EXTRA_PRICE_MIN, 0)
-        val priceMax = intent.getIntExtra(Constants.EXTRA_PRICE_MAX, 10000000)
+
+        // ✅ CORRECCIÓN: Obtener como Float en lugar de Int
+        val priceMin = intent.getFloatExtra(Constants.EXTRA_PRICE_MIN, 0f)
+        val priceMax = intent.getFloatExtra(Constants.EXTRA_PRICE_MAX, 10000000f)
+
         val isRent = intent.getBooleanExtra(Constants.EXTRA_IS_RENT, false)
         val isSale = intent.getBooleanExtra(Constants.EXTRA_IS_SALE, false)
+        val garage = intent.getBooleanExtra(Constants.EXTRA_GARAGE, false)
+        val balcon = intent.getBooleanExtra(Constants.EXTRA_BALCON, false)
+        val patio = intent.getBooleanExtra(Constants.EXTRA_PATIO, false)
+        val aceptaMascota = intent.getBooleanExtra(Constants.EXTRA_MASCOTA, false)
+        val ambienteId = intent.getIntExtra(Constants.EXTRA_AMBIENTE_ID, -1)
+        val estadoId = intent.getIntExtra(Constants.EXTRA_ESTADO_ID, -1)
 
-        if (neighborhood == null && propertyType == null && !isRent && !isSale) {
+        // ✅ Retornar null solo si NO hay ningún filtro
+        if (neighborhood == null && propertyType == null &&
+            !isRent && !isSale &&
+            priceMin == 0f && priceMax == 10000000f &&
+            !garage && !balcon && !patio && !aceptaMascota) {
             return null
         }
 
@@ -106,7 +119,13 @@ class ResultsActivity : AppCompatActivity() {
             priceMin = priceMin,
             priceMax = priceMax,
             isRent = isRent,
-            isSale = isSale
+            isSale = isSale,
+            garage = garage,
+            balcon = balcon,
+            patio = patio,
+            aceptaMascota = aceptaMascota,
+            ambienteId = if (ambienteId != -1) ambienteId else null,
+            estadoPropiedadId = if (estadoId != -1) estadoId else null
         )
     }
 
