@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">GeoHogar</string>
+
+    <!-- Welcome Screen -->
+    <string name="welcome_title">BIENVENIDOS A</string>
+    <string name="app_subtitle">GeoHogar</string>
+    <string name="welcome_description">Una aplicación para encontrar tu próximo hogar fácilmente.</string>
+    <string name="btn_start">Empezar</string>
+
+    <!-- Filter Screen -->
+    <string name="filter_title">Encuentra mas rápido</string>
+    <string name="select_neighborhood">Seleccione un Barrio</string>
+    <string name="select_property_type">Selecciona un tipo de Propiedad</string>
+    <string name="select_price_range">Seleccione un rango de Precios</string>
+    <string name="operation">Operacion</string>
+    <string name="operation_rent">Alquileres</string>
+    <string name="operation_sale">Ventas</string>
+    <string name="btn_search">BUSCAR</string>
+
+    <!-- Neighborhoods -->
+    <string name="neighborhood_centro">Centro</string>
+    <string name="neighborhood_villa_sarita">Villa Sarita</string>
+    <string name="neighborhood_palomar">Palomar</string>
+
+    <!-- Property Types -->
+    <string name="property_house">Casa</string>
+    <string name="property_apartment">Depto.</string>
+    <string name="property_duplex">Duplex</string>
+
+    <style name="CircularImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
+    <!-- ✅  Estilo para el diálogo de mapa -->
+    <style name="FullScreenDialog" parent="Theme.Material3.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustNothing</item>
+    </style>
+</resources>

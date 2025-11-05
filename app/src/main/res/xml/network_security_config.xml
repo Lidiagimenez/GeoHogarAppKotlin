@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- SOLO PARA DESARROLLO LOCAL -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Configuración para localhost y red local -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Para emulador -->
+        <domain includeSubdomains="true">10.0.2.2</domain>
+
+        <!-- Para localhost -->
+        <domain includeSubdomains="true">localhost</domain>
+
+        <!-- Para dispositivo físico - Agrega tu rango de IP local -->
+        <domain includeSubdomains="true">192.168.1.1</domain>
+        <domain includeSubdomains="true">192.168.1.100</domain>
+        <domain includeSubdomains="true">192.168.0.1</domain>
+
+        <!-- Puedes agregar más según tu red -->
+    </domain-config>
+</network-security-config>
