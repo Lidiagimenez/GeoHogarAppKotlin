@@ -2,11 +2,12 @@ package com.main.geohogar.geohogarapp.utils
 
 
 object Constants {
-    private const val HOST = "172.27.110.220"
-    private const val PORT = "4000"
+    //private const val HOST = "192.168.0.117"
+    //private const val PORT = "4000"
 
-    const val BASE_URL = "http://$HOST:$PORT/api/"
-    const val IMAGE_BASE_URL = "http://$HOST:$PORT"
+    const val BASE_URL = "https://geohogar.onrender.com/api/"
+    const val IMAGE_BASE_URL = "https://geohogar.onrender.com"
+    //const val BASE_URL = "http://$HOST:$PORT"
 
     const val TIMEOUT = 30L
 
