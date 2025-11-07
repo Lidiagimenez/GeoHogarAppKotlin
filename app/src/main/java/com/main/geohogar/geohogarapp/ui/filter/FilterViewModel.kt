@@ -73,49 +73,55 @@ class FilterViewModel : ViewModel() {
             try {
                 _isLoading.value = true
 
-                // ✅ Cargar todas las propiedades primero (para cache)
+                // ✅ Cargar todas las propiedades primero (para cache) y esperar a que termine
                 val allPropertiesResult = repository.getAllProperties()
 
-                // ✅ Cargar zonas usando el método del repositorio
-                when (val zonasResult = repository.getZonas()) {
-                    is Resource.Success -> {
-                        val zonas = zonasResult.data ?: emptyList()
-                        _neighborhoods.value = zonas
-                        Log.d("FilterViewModel", "✅ Cargados ${zonas.size} barrios: $zonas")
-                    }
-
-                    is Resource.Error -> {
-                        Log.e("FilterViewModel", "❌ Error cargando zonas: ${zonasResult.message}")
-                        _neighborhoods.value = emptyList()
-                    }
-
-                    else -> {}
-                }
-
-                // ✅ Cargar tipos de inmueble usando el método del repositorio
-                when (val tiposResult = repository.getTiposInmueble()) {
-                    is Resource.Success -> {
-                        val tipos = tiposResult.data ?: emptyList()
-                        _propertyTypes.value = tipos
-                        Log.d("FilterViewModel", "✅ Cargados ${tipos.size} tipos: $tipos")
-                    }
-
-                    is Resource.Error -> {
-                        Log.e("FilterViewModel", "❌ Error cargando tipos: ${tiposResult.message}")
-                        _propertyTypes.value = emptyList()
-                    }
-
-                    else -> {}
-                }
-
-                // ✅ Calcular rango de precios desde todas las propiedades
                 if (allPropertiesResult is Resource.Success) {
+                    // ✅ Cargar zonas usando el método del repositorio
+                    when (val zonasResult = repository.getZonas()) {
+                        is Resource.Success -> {
+                            val zonas = zonasResult.data ?: emptyList()
+                            _neighborhoods.value = zonas
+                            Log.d("FilterViewModel", "✅ Cargados ${zonas.size} barrios: $zonas")
+                        }
+
+                        is Resource.Error -> {
+                            Log.e("FilterViewModel", "❌ Error cargando zonas: ${zonasResult.message}")
+                            _neighborhoods.value = emptyList()
+                        }
+
+                        else -> {}
+                    }
+
+                    // ✅ Cargar tipos de inmueble usando el método del repositorio
+                    when (val tiposResult = repository.getTiposInmueble()) {
+                        is Resource.Success -> {
+                            val tipos = tiposResult.data ?: emptyList()
+                            _propertyTypes.value = tipos
+                            Log.d("FilterViewModel", "✅ Cargados ${tipos.size} tipos: $tipos")
+                        }
+
+                        is Resource.Error -> {
+                            Log.e("FilterViewModel", "❌ Error cargando tipos: ${tiposResult.message}")
+                            _propertyTypes.value = emptyList()
+                        }
+
+                        else -> {}
+                    }
+
+                    // ✅ Calcular rango de precios desde todas las propiedades
                     val properties = allPropertiesResult.data ?: emptyList()
                     val prices = properties.mapNotNull { it.precio.toDouble() }
 
                     if (prices.isNotEmpty()) {
-                        val minPrice = prices.minOrNull()?.toFloat() ?: 0f
-                        val maxPrice = prices.maxOrNull()?.toFloat() ?: 10000000f
+                        var minPrice = prices.minOrNull()?.toFloat() ?: 0f
+                        var maxPrice = prices.maxOrNull()?.toFloat() ?: 10000000f
+
+                        // ✅ FIX: Handle case where min and max price are the same
+                        if (minPrice == maxPrice) {
+                            maxPrice += 10000f // Add a default amount to create a valid range
+                        }
+
                         val stepSize = calculateStepSize(minPrice, maxPrice)
 
                         _priceRange.value = PriceRangeData(minPrice, maxPrice, stepSize)
@@ -127,6 +133,10 @@ class FilterViewModel : ViewModel() {
                         setDefaultPriceRange()
                     }
                 } else {
+                    Log.e("FilterViewModel", "❌ Error cargando todas las propiedades: ${allPropertiesResult.message}")
+                    _error.value = "Error al cargar los filtros iniciales"
+                    _neighborhoods.value = emptyList()
+                    _propertyTypes.value = emptyList()
                     setDefaultPriceRange()
                 }
 
