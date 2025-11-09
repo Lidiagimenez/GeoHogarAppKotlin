@@ -25,6 +25,7 @@ interface ApiService {
      */
     @GET("propiedades/filtrar")
     suspend fun getPropertiesWithFilters(
+        @Query("estado") estado: Boolean? = null,
         @Query("precio_desde") precioDesde: Double? = null,
         @Query("precio_hasta") precioHasta: Double? = null,
         @Query("ID_zona") idZona: Int? = null,

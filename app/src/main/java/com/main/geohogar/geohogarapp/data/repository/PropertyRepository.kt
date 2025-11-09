@@ -64,13 +64,13 @@ class PropertyRepository {
         """.trimIndent())
 
             val response = api.getPropertiesWithFilters(
+                estado = true, // ✅ Siempre enviar estado=true
                 precioDesde = filter.priceMin.toDouble(),
                 precioHasta = filter.priceMax.toDouble(),
                 idZona = idZona,
                 idTipoInmueble = idTipoInmueble,
                 idAmbiente = filter.ambienteId,
                 idEstadoPropiedad = idEstadoPropiedad,
-                // ✅ CAMBIO CRÍTICO: Solo enviar si son true, de lo contrario null
                 garage = if (filter.garage == true) true else null,
                 balcon = if (filter.balcon == true) true else null,
                 patio = if (filter.patio == true) true else null,
