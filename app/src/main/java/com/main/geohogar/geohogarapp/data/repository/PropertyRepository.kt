@@ -130,28 +130,12 @@ class PropertyRepository {
      */
     private fun getEstadoPropiedadId(isRent: Boolean, isSale: Boolean): Int? {
         return when {
-            isRent && !isSale -> {
-                // Buscar ID de "Para Alquiler"
-                val id = cachedPropertiesDto
-                    ?.firstOrNull { it.estadoPropiedad.nombre.contains("Alquiler", ignoreCase = true) }
-                    ?.estadoPropiedad?.id
-                Log.d("PropertyRepository", "Mapeo operación: Alquiler → ID: $id")
-                id
-            }
-            isSale && !isRent -> {
-                // Buscar ID de "Para Venta"
-                val id = cachedPropertiesDto
-                    ?.firstOrNull { it.estadoPropiedad.nombre.contains("Venta", ignoreCase = true) }
-                    ?.estadoPropiedad?.id
-                Log.d("PropertyRepository", "Mapeo operación: Venta → ID: $id")
-                id
-            }
-            else -> {
-                Log.d("PropertyRepository", "Mapeo operación: Todos → ID: null")
-                null // Ambos o ninguno
-            }
+            isRent && !isSale -> 2 // ID fijo para "Para Alquiler"
+            isSale && !isRent -> 1 // ID fijo para "Para Venta"
+            else -> null // Ambos o ninguno → traer todo
         }
     }
+
 
     suspend fun getPropertyDetail(id: Int): Resource<Property> = withContext(Dispatchers.IO) {
         try {
